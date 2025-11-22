@@ -89,7 +89,8 @@ func NewGinRouter(db *gorm.DB, corsAllowOrigins []string) (*gin.Engine, error) {
 
 				// useCsrfではCSRF検証->OAPIバリデータ
 				useCsrf.Use(middleware.CsrfValidator())
-				useCsrf.Use(ginMiddleware.OapiRequestValidator(swagger))
+				// FIXME: 一時的にコメントアウトして検証中
+				// useCsrf.Use(ginMiddleware.OapiRequestValidator(swagger))
 
 				useCsrf.POST("/signup", wrapper.PostSignUp)
 				useCsrf.POST("/login", wrapper.PostLogin)
