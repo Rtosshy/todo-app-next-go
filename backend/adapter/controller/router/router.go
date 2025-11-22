@@ -13,7 +13,7 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/gin-gonic/gin"
 
-	// ginMiddleware "github.com/oapi-codegen/gin-middleware"
+	ginMiddleware "github.com/oapi-codegen/gin-middleware"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/swag"
@@ -48,9 +48,6 @@ func NewGinRouter(db *gorm.DB, corsAllowOrigins []string) (*gin.Engine, error) {
 		logger.Warn(err.Error())
 		return nil, err
 	}
-
-	// サーバーURLバリデーションをスキップ
-	swagger.Servers = nil
 
 	router.Use(middleware.GinZap())
 	router.Use(middleware.RecoveryWithZap())
@@ -90,8 +87,7 @@ func NewGinRouter(db *gorm.DB, corsAllowOrigins []string) (*gin.Engine, error) {
 
 				// useCsrfではCSRF検証->OAPIバリデータ
 				useCsrf.Use(middleware.CsrfValidator())
-				// FIXME: 一時的にコメントアウトして検証中
-				// useCsrf.Use(ginMiddleware.OapiRequestValidator(swagger))
+				useCsrf.Use(ginMiddleware.OapiRequestValidator(swagger))
 
 				useCsrf.POST("/signup", wrapper.PostSignUp)
 				useCsrf.POST("/login", wrapper.PostLogin)

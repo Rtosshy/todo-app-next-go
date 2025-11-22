@@ -6,9 +6,7 @@ export default defineConfig({
     output: {
       namingConvention: 'kebab-case',
       target: './src/gen/api-client.ts',
-      baseUrl: 'http://localhost:8080/api/v1',
       client: 'axios',
-      // schemas: './src/gen/schemas',
       override: {
         mutator: {
           path: './src/lib/api-client-instance.ts',

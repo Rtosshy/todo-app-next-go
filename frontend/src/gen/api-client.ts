@@ -98,10 +98,7 @@ export const getTodoAPI = () => {
    * @summary Get CSRF token
    */
   const getCsrfToken = (options?: SecondParameter<typeof customInstance<CsrfTokenResponse>>) => {
-    return customInstance<CsrfTokenResponse>(
-      { url: `http://localhost:8080/api/v1/csrf`, method: 'GET' },
-      options,
-    )
+    return customInstance<CsrfTokenResponse>({ url: `/csrf`, method: 'GET' }, options)
   }
 
   /**
@@ -113,7 +110,7 @@ export const getTodoAPI = () => {
   ) => {
     return customInstance<SignUpResponse>(
       {
-        url: `http://localhost:8080/api/v1/signup`,
+        url: `/signup`,
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         data: signUpRequestBody,
@@ -131,7 +128,7 @@ export const getTodoAPI = () => {
   ) => {
     return customInstance<void>(
       {
-        url: `http://localhost:8080/api/v1/login`,
+        url: `/login`,
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         data: loginRequestBody,
@@ -144,10 +141,7 @@ export const getTodoAPI = () => {
    * @summary Logout
    */
   const postLogout = (options?: SecondParameter<typeof customInstance<void>>) => {
-    return customInstance<void>(
-      { url: `http://localhost:8080/api/v1/logout`, method: 'POST' },
-      options,
-    )
+    return customInstance<void>({ url: `/logout`, method: 'POST' }, options)
   }
 
   /**
@@ -159,7 +153,7 @@ export const getTodoAPI = () => {
   ) => {
     return customInstance<TaskResponse>(
       {
-        url: `http://localhost:8080/api/v1/tasks`,
+        url: `/tasks`,
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         data: createTaskRequestBody,
@@ -172,10 +166,7 @@ export const getTodoAPI = () => {
    * @summary Get all tasks
    */
   const getAllTasks = (options?: SecondParameter<typeof customInstance<TasksResponse>>) => {
-    return customInstance<TasksResponse>(
-      { url: `http://localhost:8080/api/v1/tasks`, method: 'GET' },
-      options,
-    )
+    return customInstance<TasksResponse>({ url: `/tasks`, method: 'GET' }, options)
   }
 
   /**
@@ -185,10 +176,7 @@ export const getTodoAPI = () => {
     id: number,
     options?: SecondParameter<typeof customInstance<TaskResponse>>,
   ) => {
-    return customInstance<TaskResponse>(
-      { url: `http://localhost:8080/api/v1/tasks/${id}`, method: 'GET' },
-      options,
-    )
+    return customInstance<TaskResponse>({ url: `/tasks/${id}`, method: 'GET' }, options)
   }
 
   /**
@@ -201,7 +189,7 @@ export const getTodoAPI = () => {
   ) => {
     return customInstance<TaskResponse>(
       {
-        url: `http://localhost:8080/api/v1/tasks/${id}`,
+        url: `/tasks/${id}`,
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         data: updateTaskRequestBody,
@@ -214,10 +202,7 @@ export const getTodoAPI = () => {
    * @summary Delete task by ID
    */
   const deleteTaskById = (id: number, options?: SecondParameter<typeof customInstance<void>>) => {
-    return customInstance<void>(
-      { url: `http://localhost:8080/api/v1/tasks/${id}`, method: 'DELETE' },
-      options,
-    )
+    return customInstance<void>({ url: `/tasks/${id}`, method: 'DELETE' }, options)
   }
 
   return {

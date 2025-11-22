@@ -3,7 +3,7 @@ import { getCsrfToken } from './csrf-store'
 import type { AxiosRequestConfig } from 'axios'
 
 export const AXIOS_INSTANCE = axios.create({
-  baseURL: 'http://localhost:8080/api/v1',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1',
   withCredentials: true,
 })
 
