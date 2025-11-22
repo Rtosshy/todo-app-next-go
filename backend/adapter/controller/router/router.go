@@ -48,6 +48,9 @@ func NewGinRouter(db *gorm.DB, corsAllowOrigins []string) (*gin.Engine, error) {
 		return nil, err
 	}
 
+	// サーバーURLバリデーションをスキップ
+	swagger.Servers = nil
+
 	router.Use(middleware.GinZap())
 	router.Use(middleware.RecoveryWithZap())
 
