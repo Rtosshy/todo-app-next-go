@@ -1,0 +1,388 @@
+openapi: 3.0.3
+info:
+  title: Todo API
+  version: 1.0.0
+servers:
+  - url: http://0.0.0.0:8080/api/v1
+  - url: http://localhost:8080/api/v1
+  - url: http://127.0.0.1:8080/api/v1
+paths:
+  /csrf:
+    get:
+      tags:
+        - csrf
+      summary: Get CSRF token
+      operationId: getCsrfToken
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CsrfTokenResponse"
+  /signup:
+    post:
+      tags:
+        - users
+      summary: Sign up
+      operationId: postSignUp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignUpRequestBody"
+      responses:
+        "201":
+          description: "Successful sign up"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignUpResponse"
+        "400":
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /login:
+    post:
+      tags:
+        - users
+      summary: Login
+      operationId: postLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequestBody"
+      responses:
+        "200":
+          description: "Successful login"
+        "400":
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /logout:
+    post:
+      tags:
+        - users
+      summary: Logout
+      operationId: postLogout
+      responses:
+        "200":
+          description: No Content
+
+  /tasks:
+    post:
+      tags:
+        - tasks
+      summary: Create a new task
+      operationId: createTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTaskRequestBody"
+      responses:
+        "201":
+          description: "Task created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResponse"
+        "400":
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      tags:
+        - tasks
+      summary: Get all tasks
+      operationId: getAllTasks
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TasksResponse"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /tasks/{id}:
+    get:
+      tags:
+        - tasks
+      summary: Get task by ID
+      operationId: getTaskById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResponse"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      tags:
+        - tasks
+      summary: Update task by ID
+      operationId: updateTaskById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTaskRequestBody"
+      responses:
+        "200":
+          description: "Task updated successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResponse"
+        "400":
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - tasks
+      summary: Delete task by ID
+      operationId: deleteTaskById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: "Task deleted successfully"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    ApiVersion:
+      type: string
+      default: "v1"
+    CsrfToken:
+      type: string
+    Status:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          enum:
+            - todo
+            - inProgress
+            - done
+            - archive
+            - pending
+      required:
+        - name
+    User:
+      type: object
+      properties:
+        kind:
+          type: string
+          default: "user"
+        id:
+          type: integer
+        email:
+          type: string
+        password:
+          type: string
+        created_at:
+          type: string
+          format: date
+      required:
+        - kind
+        - email
+    Task:
+      type: object
+      properties:
+        kind:
+          type: string
+          default: "task"
+        id:
+          type: integer
+        name:
+          type: string
+        status:
+          $ref: "#/components/schemas/Status"
+      required:
+        - kind
+        - id
+        - name
+        - status
+
+    # Request bodies
+    SignUpRequestBody:
+      type: object
+      properties:
+        kind:
+          type: string
+          default: "user"
+        user:
+          $ref: "#/components/schemas/User"
+      required:
+        - user
+    LoginRequestBody:
+      type: object
+      properties:
+        kind:
+          type: string
+          default: "user"
+        user:
+          $ref: "#/components/schemas/User"
+      required:
+        - user
+    CreateTaskRequestBody:
+      type: object
+      properties:
+        kind:
+          type: string
+          default: "task"
+        name:
+          type: string
+        status:
+          $ref: "#/components/schemas/Status"
+      required:
+        - name
+        - status
+    UpdateTaskRequestBody:
+      type: object
+      properties:
+        kind:
+          type: string
+          default: "task"
+        name:
+          type: string
+        status:
+          $ref: "#/components/schemas/Status"
+      required:
+        - name
+        - status
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: integer
+      required:
+        - message
+        - code
+
+    # Responses
+    CsrfTokenResponse:
+      type: object
+      properties:
+        apiVersion:
+          $ref: "#/components/schemas/ApiVersion"
+        data:
+          $ref: "#/components/schemas/CsrfToken"
+      required:
+        - apiVersion
+        - data
+    SignUpResponse:
+      type: object
+      properties:
+        apiVersion:
+          $ref: "#/components/schemas/ApiVersion"
+        data:
+          $ref: "#/components/schemas/User"
+      required:
+        - apiVersion
+        - data
+    TaskResponse:
+      type: object
+      properties:
+        apiVersion:
+          $ref: "#/components/schemas/ApiVersion"
+        data:
+          $ref: "#/components/schemas/Task"
+      required:
+        - apiVersion
+        - data
+    TasksResponse:
+      type: object
+      properties:
+        apiVersion:
+          $ref: "#/components/schemas/ApiVersion"
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Task"
+      required:
+        - apiVersion
+        - data
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: "#/components/schemas/Error"
+      required:
+        - error
