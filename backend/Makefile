@@ -1,7 +1,7 @@
 IMAGE_TAG = todo-app-next-go-api
 OSPI_CMD = oapi-codegen --config=./adapter/controller/config.yaml ./api/openapi.yaml
 
-generate-code-from-openapi: ## Generate code from openapi
+gen: ## Generate code from openapi
 	go install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
 	$(OSPI_CMD)
 
