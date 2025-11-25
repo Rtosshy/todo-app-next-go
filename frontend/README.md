@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend
 
-## Getting Started
+## 概要
 
-First, run the development server:
+Next.js 16 (App Router) + React 19 による Todo アプリケーション
+
+- **型安全**: OpenAPI 3.0 から TypeScript 型を自動生成
+- **バリデーション**: Zod + react-hook-form でフォーム検証
+- **セキュリティ**: CSRF + JWT 認証によるセキュアな通信
+
+## アーキテクチャ
+
+### ディレクトリ構造
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+frontend/
+  ├── src/
+  │   ├── app/              # Next.js App Router
+  │   │   ├── login/        # ログインページ
+  │   │   ├── signup/       # サインアップページ
+  │   │   ├── todos/        # Todo管理ページ
+  │   │   └── ui/           # 共通UIコンポーネント
+  │   ├── gen/              # OpenAPIから生成（編集禁止）
+  │   │   ├── api-client.ts # 型付きAPIクライアント
+  │   │   └── schemas/      # Zodバリデーションスキーマ
+  │   └── lib/              # ユーティリティ関数
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## セットアップ
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 必要環境
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js 20+
+- yarn
 
-## Learn More
+### クイックスタート
 
-To learn more about Next.js, take a look at the following resources:
+#### 1. 依存関係のインストール
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+cd frontend
+yarn install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### 2. バックエンドの起動
 
-## Deploy on Vercel
+フロントエンドは `http://localhost:8080` で動作するバックエンド API に接続します
+先にバックエンドを起動してください（詳細は `backend/README.md` 参照）
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### 3. 開発サーバーの起動
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+yarn dev
+```
+
+アプリケーションが `http://localhost:3000` で起動します
+
+## 開発方法
+
+### よく使うコマンド
+
+```bash
+# 開発サーバー起動
+yarn dev
+
+# OpenAPI から型生成
+yarn gen
+
+# Lint
+yarn lint
+```
+
+### OpenAPI 駆動開発のワークフロー
+
+1. Backend で `api/openapi.yaml` を編集
+2. Backend で `make gen` でコード生成
+3. **Frontend で `yarn gen` で型と API クライアントを生成**
+4. 生成された型を使って実装
+
+生成されるもの：
+
+- `src/gen/api-client.ts`: 型付き Axios クライアント
+- `src/gen/schemas/`: Zod バリデーションスキーマ
+
+### セキュリティフロー
+
+1. CSRF トークン取得: `GET /api/v1/csrf`
+2. 全ての状態変更リクエストに `X-CSRF-Token` ヘッダーを付与
+3. ログイン後、JWT トークンが HTTP-only cookie に保存される
+
+## その他
+
+### API 接続先
+
+- Backend URL: `http://localhost:8080/api/v1`
+- 設定ファイル: `orval.config.js`
+
+### 主な技術スタック
+
+- **Framework**: Next.js 16 (App Router)
+- **UI Library**: React 19
+- **Styling**: Tailwind CSS v4
+- **Form**: react-hook-form + @hookform/resolvers
+- **Validation**: Zod v4
+- **HTTP Client**: Axios
+- **Code Generation**: Orval
