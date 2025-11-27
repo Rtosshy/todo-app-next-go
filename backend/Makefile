@@ -12,14 +12,12 @@ external-down: ## Down external containers
 	pushd ./build/docker && docker compose down && popd
 
 run: ## Run app
-	export APP_ENV=development
 	go mod tidy
-	go run ./cmd/server/main.go
+	APP_ENV=development go run ./cmd/server/main.go
 
 run-prod: ## Run app in production
-	export APP_ENV=production
 	go mod tidy
-	go run ./cmd/server/main.go
+	APP_ENV=production go run ./cmd/server/main.go
 
 build-prod: ## Build app for production
 	go mod download
