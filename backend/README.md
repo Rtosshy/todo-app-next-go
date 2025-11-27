@@ -115,3 +115,66 @@ make help
 
 - OpenAPI 仕様: `api/openapi.yaml`
 - Swagger UI: `http://localhost:8001` (docker-compose 起動時)
+
+### Curl での API のテストコマンド
+
+```bash
+# /health
+curl http://localhost:8080/health
+```
+
+```bash
+# /api/v1/csrf
+curl http://localhost:8080/api/v1/csrf
+```
+
+```bash
+# /api/v1/signup
+curl -c cookies.txt -X POST http://localhost:8080/api/v1/signup \
+  -H "Content-Type: application/json" \
+  -H "X-CSRF-Token: <csrf-token>" \
+  -H "Cookie: _csrf=<csrf-token>" \
+  -d '{
+    "user": {
+        "email": "email@email.com",
+        "password": "password"
+    }
+}'
+```
+
+```bash
+# /api/v1/login
+curl -c cookies.txt -X POST http://localhost:8080/api/v1/login \
+  -H "Content-Type: application/json" \
+  -H "X-CSRF-Token: <csrf-token>" \
+  -H "Cookie: _csrf=<csrf-token>" \
+  -d '{
+    "user": {
+        "email": "email@email.com",
+        "password": "email"
+    }
+}'
+```
+
+```bash
+# /api/v1/tasks
+curl -X POST http://localhost:8080/api/v1/tasks \
+  -H "Content-Type: application/json" \
+  -H "X-CSRF-Token: <csrf-token>" \
+  -H "Cookie: _csrf=<csrf-token>; token=<jwt-token>" \
+  -d '{
+  "kind": "task",
+  "name": "test",
+  "status": {
+    "name": "todo"
+  }
+}'
+```
+
+```bash
+# /api/v1/tasks
+curl -X GET http://localhost:8080/api/v1/tasks \
+  -H "Content-Type: application/json" \
+  -H "X-CSRF-Token: <csrf-token>" \
+  -H "Cookie: _csrf=<csrf-token>; token=<jwt-token>"
+```
