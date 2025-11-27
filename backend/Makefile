@@ -32,10 +32,12 @@ build-linux:
 	GOOS=linux GOARCH=amd64 go build -v -o bin_linux ./cmd/server/main.go
 
 start-prod: build-prod ## Build and run in production
-	APP_ENV=production ./bin
+	export APP_ENV=production
+	./bin
 
 start-linux:
-	APP_ENV=production ./bin_linux
+	export APP_ENV=production
+	./bin_linux
 
 docker-build: ## Build image
 	docker build --tag $(IMAGE_TAG) -f ./build/docker/Dockerfile .
