@@ -52,11 +52,10 @@ func NewGinRouter(db *gorm.DB, corsAllowOrigins []string) (*gin.Engine, error) {
 	router.Use(middleware.GinZap())
 	router.Use(middleware.RecoveryWithZap())
 
-	router.GET("/", handler.Index)
-	router.GET("/health", handler.Health)
-
 	apiGroup := router.Group("/api")
 	{
+		apiGroup.GET("/", handler.Index)
+		apiGroup.GET("/health", handler.Health)
 		v1 := apiGroup.Group("/v1")
 		{
 

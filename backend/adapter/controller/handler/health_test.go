@@ -11,7 +11,7 @@ import (
 
 func TestHealthHandler(t *testing.T) {
 	w := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/health", nil)
+	request, _ := http.NewRequest("GET", "/api/health", nil)
 	ginContext, _ := gin.CreateTestContext(w)
 	ginContext.Request = request
 

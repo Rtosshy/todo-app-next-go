@@ -119,8 +119,8 @@ make help
 ### Curl での API のテストコマンド
 
 ```bash
-# /health
-curl http://localhost:8080/health
+# /api/health
+curl http://localhost:8080/api/health
 ```
 
 ```bash
