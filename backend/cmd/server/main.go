@@ -21,11 +21,14 @@ import (
 
 func main() {
 	appEnv := pkg.GetEnvDefault("APP_ENV", "development")
+	envFile := ".env"
 	if appEnv == "development" {
-		err := godotenv.Load(".env.development")
-		if err != nil {
-			logger.Warn("Error loading .env.development file")
-		}
+		envFile = ".env.development"
+	}
+
+	err := godotenv.Load(envFile)
+	if err != nil {
+		logger.Warn("Error loading environment file: " + envFile)
 	}
 
 	db, err := database.NewDatabaseSQLFactory(database.InstancePostgres)
