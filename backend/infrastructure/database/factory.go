@@ -22,7 +22,7 @@ func NewDatabaseSQLFactory(instance int) (db *gorm.DB, err error) {
 	switch instance {
 	case InstancePostgres:
 		configs := NewConfigPostgres()
-		dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", configs.User, configs.Password, configs.Host, configs.Port, configs.Database)
+		dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", configs.User, configs.Password, configs.Host, configs.Port, configs.Database, configs.SSLMode)
 		db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	case InstanceSQLite:

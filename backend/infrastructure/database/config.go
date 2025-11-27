@@ -9,6 +9,7 @@ type Config struct {
 	Driver   string
 	User     string
 	Password string
+	SSLMode  string
 }
 
 func NewConfigPostgres() *Config {
@@ -19,6 +20,7 @@ func NewConfigPostgres() *Config {
 		Driver:   pkg.GetEnvDefault("DB_DRIVER", "postgres"),
 		User:     pkg.GetEnvDefault("DB_USER", "app"),
 		Password: pkg.GetEnvDefault("DB_PASSWORD", "password"),
+		SSLMode:  pkg.GetEnvDefault("DB_SSL_MODE", "disable"),
 	}
 }
 
