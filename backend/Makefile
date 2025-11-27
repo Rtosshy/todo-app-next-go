@@ -35,7 +35,8 @@ start-prod: build-prod ## Build and run in production
 	APP_ENV=production ./bin
 
 start-linux:
-	APP_ENV=production ./bin_linux
+	APP_ENV=production
+	./bin_linux
 
 docker-build: ## Build image
 	docker build --tag $(IMAGE_TAG) -f ./build/docker/Dockerfile .
