@@ -22,19 +22,19 @@ run-prod: ## Run app in production
 	go run ./cmd/server/main.go
 
 build-prod: ## Build app for production
+	export APP_ENV=production
 	go mod download
 	go build -o bin ./cmd/server/main.go
 
 build-linux:
+	export APP_ENV=production
 	go mod download
 	GOOS=linux GOARCH=amd64 go build -v -o linux_bin ./cmd/server/main.go
 
 start-prod: build-prod ## Build and run in production
-	export APP_ENV=production
 	./bin
 
 start-linux:
-	export APP_ENV=production
 	./linux_bin
 
 docker-build: ## Build image
