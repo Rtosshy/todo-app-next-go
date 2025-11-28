@@ -119,6 +119,7 @@ make help
 1. Go のインストール
 
 ```bash
+# システムのアップデート
 sudo yum update -y
 
 # Goのダウンロード
@@ -135,6 +136,7 @@ source ~/.bashrc
 
 # インストール確認
 go version
+# 出力: go version go1.25.4 linux/amd64
 ```
 
 2. Git のインストール
@@ -147,7 +149,7 @@ sudo yum install -y git
 
 ```bash
 cd ~
-git clone <your-repository-url>
+git clone https://github.com/Rtosshy/todo-app-next-go.git
 cd todo-app-next-go/backend
 ```
 
@@ -195,7 +197,17 @@ go mod download
 go build -o bin_linux ./cmd/server/main.go
 ```
 
-6. systemd サービスの作成
+6. 動作確認(テスト起動)
+
+```bash
+# テスト起動
+APP_ENV=production ./bin_linux
+
+# 別のターミナルでテスト
+curl http://localhost:8080/api
+```
+
+7. systemd サービスの作成
 
 ```bash
 sudo vi /etc/systemd/system/todo-backend.service

@@ -89,6 +89,177 @@ yarn lint
 2. 全ての状態変更リクエストに `X-CSRF-Token` ヘッダーを付与
 3. ログイン後、JWT トークンが HTTP-only cookie に保存される
 
+## AWS EC2 へのデプロイ
+
+### 前提条件
+
+- AWS EC2 インスタンス作成済み (Amazon Linux, t3.micro)
+- バックエンド API 稼働中
+
+1. Node.js のインストール
+
+```bash
+# システムのアップデート
+sudo yum update -y
+
+# Node.js 23.xのインストール
+curl -fsSL https://rpm.nodesource.com/setup_23.x | sudo bash -
+sudo yum install -y nodejs
+
+# インストール確認
+node -v
+# 出力： v23.x.x
+
+npm -v
+# 出力： vx.x.x
+```
+
+2. Git のインストール
+
+```bash
+sudo yum install -y git
+```
+
+3. nginx のインストール
+
+```bash
+sudo yum install -y nginx
+
+# nginxの起動と自動起動設定
+sudo systemctl start nginx
+sudo systemctl enable nginx
+
+# 状態確認
+sudo systemctl status nginx
+```
+
+4. アプリケーションのクローン
+
+```bash
+cd ~
+git clone https://github.com/Rtosshy/todo-app-next-go.git
+cd todo-app-next-go/frontend
+```
+
+4. 環境変数の設定
+
+```bash
+vi .env
+```
+
+以下の内容を入力
+
+```env
+NEXT_PUBLIC_API_URL=http://<ALB-DNS>/api/v1
+```
+
+5. 依存関係のインストールとビルド
+
+```bash
+# 依存関係のインストール
+npm install
+
+# プロダクションビルド
+npm run build
+```
+
+6. 動作確認(テスト起動)
+
+```bash
+# テスト起動
+npm start
+
+# 別のターミナルでテスト
+curl http://localhost:3000
+# HTMLが返ってくればOK
+```
+
+7. nginx の設定
+
+```bash
+# nginx設定ファイルを編集
+sudo vi /etc/nginx/nginx.conf
+```
+
+以下の内容を入力
+
+```nginx
+http {
+ ...
+ server {
+   ...
+   // 下記を追加
+   location / {
+    proxy_pass http://localhost:3000;
+   }
+  ...
+ }
+ ...
+}
+```
+
+保存後
+
+```bash
+# nginx設定のテスト
+sudo nginx -t
+
+# nginxの再起動
+sudo systemctl restart nginx
+```
+
+7. systemd サービスの作成
+
+```bash
+sudo vi /etc/systemd/system/todo-frontend.service
+```
+
+以下の内容を入力
+
+```ini
+[Unit]
+Description=Todo Frontend Next.js
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/todo-app-next-go/frontend
+Environment="NODE_ENV=production"
+ExecStart=/usr/bin/npm start
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+保存後
+
+```bash
+# サービスの有効化と起動
+sudo systemctl daemon-reload
+sudo systemctl enable todo-frontend
+sudo systemctl start todo-frontend
+
+# 状態確認
+sudo systemctl status todo-frontend
+
+# ログ確認
+sudo journalctl -u todo-frontend -f
+```
+
+8. 動作確認(ローカルアクセス)
+
+```bash
+# EC2内からアクセス
+curl http://localhost:80
+# HTMLが返ってくればOK
+
+curl http://localhost:3000
+# Next.jsが直接応答することを確認
+```
+
 ## その他
 
 ### API 接続先
