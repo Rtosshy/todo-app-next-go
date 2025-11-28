@@ -11,7 +11,7 @@ func GetCookieConfig() (sameSite http.SameSite, secure bool, domain string) {
 
 	if isProduction {
 		sameSite = http.SameSiteNoneMode
-		secure = false // if https use true
+		secure = true
 		domain = os.Getenv("API_DOMAIN")
 	} else {
 		sameSite = http.SameSiteLaxMode
