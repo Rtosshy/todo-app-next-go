@@ -11,3 +11,7 @@
 ## Backend
 
 [backend/README.md](./backend/README.md)
+
+## インフラ構成図
+
+![infra](./docs/infra.png)
