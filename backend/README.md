@@ -127,7 +127,7 @@ cd /tmp
 wget https://go.dev/dl/go.1.25.4.linux-amd64.tar.gz
 
 # Goの展開
-sudo tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.25.4.linux-amd64.tar.gz
 
 # パスの設定
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
