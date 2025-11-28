@@ -109,6 +109,133 @@ make help
 2. `make gen` でコード生成
 3. 生成された `adapter/controller/presenter/api.go` を基に実装
 
+## AWS EC2 へのデプロイ
+
+### 前提条件
+
+- AWS EC2 インスタンス作成済み (Amazon Linux, t3.micro)
+- RDS PostgreSQL 作成済み
+
+1. Go のインストール
+
+```bash
+sudo yum update -y
+
+# Goのダウンロード
+cd /tmp
+wget https://go.dev/dl/go.1.25.4.linux-amd64.tar.gz
+
+# Goの展開
+sudo tar -C /usr/local -xzf go1.21.5.linux-amd64.tar.gz
+
+# パスの設定
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+echo 'export GOPATH=$HOME/go' >> ~/.bashrc
+source ~/.bashrc
+
+# インストール確認
+go version
+```
+
+2. Git のインストール
+
+```bash
+sudo yum install -y git
+```
+
+3. アプリケーションのクローン
+
+```bash
+cd ~
+git clone <your-repository-url>
+cd todo-app-next-go/backend
+```
+
+4. 環境変数の設定
+
+```bash
+vi .env
+```
+
+以下の内容を入力
+
+```env
+APP_ENV=production
+DB_USER=postgres
+DB_PASSWORD=<RDS-master-password>
+DB_NAME=todo_db
+DB_HOST=<RDS-endpoint>
+DB_PORT=5432
+DB_DRIVER=postgres
+SECRET=<random-secret-key>
+API_DOMAIN=
+WEB_HOST=0.0.0.0
+WEB_PORT=8080
+WEB_CORS_ALLOW_ORIGINS=http://<ALB-DNS>,http://localhost:3000
+```
+
+5. アプリケーションのビルド
+
+ローカルでクロスコンパイル(推奨)
+
+```bash
+# ローカルマシンで
+make build-linux
+
+# EC2にアップロード
+scp bin_linux ec2-user@<backend-ip>:~/todo-app-next-go/backend
+```
+
+EC2 で直接ビルド(時間がかかる)
+
+```bash
+# EC2で
+cd ~/todo-app-next-go/backend
+go mod download
+go build -o bin_linux ./cmd/server/main.go
+```
+
+6. systemd サービスの作成
+
+```bash
+sudo vi /etc/systemd/system/todo-backend.service
+```
+
+以下の内容を入力
+
+```ini
+[Unit]
+Description=Todo Backend API
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/todo-app-next-go/backend
+Environment="APP_ENV=production"
+ExecStart=/home/ec2-user/todo-app-next-go/backend/bin_linux
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+保存後
+
+```bash
+# サービスの有効化と起動
+sudo systemctl daemon-reload
+sudo systemctl enable todo-backend
+sudo systemctl start todo-backend
+
+# 状態確認
+sudo systemctl status todo-backend
+
+# ログ確認
+sudo journalctl -u todo-backend -f
+```
+
 ## その他
 
 ### API 仕様
@@ -116,7 +243,7 @@ make help
 - OpenAPI 仕様: `api/openapi.yaml`
 - Swagger UI: `http://localhost:8001` (docker-compose 起動時)
 
-### Curl での API のテストコマンド
+### Curl での API テストコマンド
 
 ```bash
 # /api/health
