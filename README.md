@@ -2,7 +2,11 @@
 
 ## 概要
 
-Next.js と Go による Todo アプリケーション
+Next.js + Go + PostgreSQL による Todo アプリケーション
+
+## アプリケーション URL
+
+[todo-app-next-go](https://todo-rcloxmsrc-tosshy820gmailcoms-projects.vercel.app)
 
 ## ディレクトリ構造
 
