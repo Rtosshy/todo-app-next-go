@@ -6,7 +6,7 @@ Next.js + Go + PostgreSQL による Todo アプリケーション
 
 ## アプリケーション URL
 
-[todo-app-next-go](https://todo-rcloxmsrc-tosshy820gmailcoms-projects.vercel.app)
+[todo-app-next-go](https://todo-app-drab-one-93.vercel.app)
 
 ## ディレクトリ構造
 
