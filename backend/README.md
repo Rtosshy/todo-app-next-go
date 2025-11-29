@@ -27,9 +27,10 @@ backend/
 
 ### 必要環境
 
-- Go 1.23+
+- Go 1.25+
 - PostgreSQL
 - Docker
+- make
 
 #### 1. リポジトリのクローン
 
@@ -50,10 +51,10 @@ make external-up
 
 `.env.development`を用意
 
-```bash
+```env
 DB_USER=app
 DB_PASSWORD=password
-DB_DATANAME=api_database
+DB_NAME=api_database
 DB_HOST=localhost
 DB_PORT=5432
 DB_SSL_MODE=disable
