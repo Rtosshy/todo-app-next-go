@@ -26,29 +26,34 @@ frontend/
       └── lib/              # ユーティリティ関数
 ```
 
-## セットアップ
+## ローカル PC でのセットアップ
 
 ### 必要環境
 
 - Node.js 20+
 - yarn
 
-### クイックスタート
-
-#### 1. 依存関係のインストール
+#### 1. リポジトリのクローン
 
 ```bash
+git clone https://github.com/Rtosshy/todo-app-next-go.git
+cd todo-app-next-go
 cd frontend
+```
+
+#### 2. 依存関係のインストール
+
+```bash
 yarn install
 ```
 
-#### 2. バックエンドの起動
+#### 3. バックエンドの起動
 
 フロントエンドは `http://localhost:8080` で動作するバックエンド API に接続します
 
 先にバックエンドを起動してください（詳細は `backend/README.md` 参照）
 
-#### 3. 開発サーバーの起動
+#### 4. 開発サーバーの起動
 
 ```bash
 yarn dev
@@ -96,7 +101,7 @@ yarn lint
 - AWS EC2 インスタンス作成済み (Amazon Linux, t3.micro)
 - バックエンド API 稼働中
 
-1. Node.js のインストール
+#### 1. Node.js のインストール
 
 ```bash
 # システムのアップデート
@@ -114,13 +119,13 @@ npm -v
 # 出力： vx.x.x
 ```
 
-2. Git のインストール
+#### 2. Git のインストール
 
 ```bash
 sudo yum install -y git
 ```
 
-3. nginx のインストール
+#### 3. nginx のインストール
 
 ```bash
 sudo yum install -y nginx
@@ -133,7 +138,7 @@ sudo systemctl enable nginx
 sudo systemctl status nginx
 ```
 
-4. アプリケーションのクローン
+#### 4. アプリケーションのクローン
 
 ```bash
 cd ~
@@ -141,7 +146,7 @@ git clone https://github.com/Rtosshy/todo-app-next-go.git
 cd todo-app-next-go/frontend
 ```
 
-4. 環境変数の設定
+#### 5. 環境変数の設定
 
 ```bash
 vi .env
@@ -153,7 +158,7 @@ vi .env
 NEXT_PUBLIC_API_URL=http://<ALB-DNS>/api/v1
 ```
 
-5. 依存関係のインストールとビルド
+#### 6. 依存関係のインストールとビルド
 
 ```bash
 # 依存関係のインストール
@@ -163,7 +168,7 @@ npm install
 npm run build
 ```
 
-6. 動作確認(テスト起動)
+#### 7. 動作確認(テスト起動)
 
 ```bash
 # テスト起動
@@ -174,7 +179,7 @@ curl http://localhost:3000
 # HTMLが返ってくればOK
 ```
 
-7. nginx の設定
+#### 8. nginx の設定
 
 ```bash
 # nginx設定ファイルを編集
@@ -208,7 +213,7 @@ sudo nginx -t
 sudo systemctl restart nginx
 ```
 
-7. systemd サービスの作成
+#### 9. systemd サービスの作成
 
 ```bash
 sudo vi /etc/systemd/system/todo-frontend.service
@@ -249,7 +254,7 @@ sudo systemctl status todo-frontend
 sudo journalctl -u todo-frontend -f
 ```
 
-8. 動作確認(ローカルアクセス)
+#### 10. 動作確認(ローカルアクセス)
 
 ```bash
 # EC2内からアクセス

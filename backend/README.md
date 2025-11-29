@@ -23,24 +23,30 @@ backend/
   └── infrastructure/  # 外部依存（GORM, Ginサーバー）
 ```
 
-## セットアップ
+## ローカル PC でのセットアップ
 
 ### 必要環境
 
 - Go 1.23+
-- PostgresSQL
+- PostgreSQL
 - Docker
 
-### クイックスタート
+#### 1. リポジトリのクローン
 
-#### 1. PostgreSQL の起動
+```bash
+git clone https://github.com/Rtosshy/todo-app-next-go.git
+cd todo-app-next-go
+cd backend
+```
+
+#### 2. PostgreSQL の起動
 
 ```bash
 # Docker で PostgreSQL を起動
 make external-up
 ```
 
-#### 2. 環境変数の設定
+#### 3. 環境変数の設定
 
 `.env.development`を用意
 
@@ -55,7 +61,7 @@ DB_SSL_MODE=disable
 
 カスタマイズが必要な場合は編集してください（デフォルト値は `infrastructure/database/config.go` 参照）
 
-#### 3. サーバーの起動
+#### 4. サーバーの起動
 
 ```bash
 make run
@@ -116,7 +122,7 @@ make help
 - AWS EC2 インスタンス作成済み (Amazon Linux, t3.micro)
 - RDS PostgreSQL 作成済み
 
-1. Go のインストール
+#### 1. Go のインストール
 
 ```bash
 # システムのアップデート
@@ -139,13 +145,13 @@ go version
 # 出力: go version go1.25.4 linux/amd64
 ```
 
-2. Git のインストール
+#### 2. Git のインストール
 
 ```bash
 sudo yum install -y git
 ```
 
-3. アプリケーションのクローン
+#### 3. アプリケーションのクローン
 
 ```bash
 cd ~
@@ -153,7 +159,7 @@ git clone https://github.com/Rtosshy/todo-app-next-go.git
 cd todo-app-next-go/backend
 ```
 
-4. 環境変数の設定
+#### 4. 環境変数の設定
 
 ```bash
 vi .env
@@ -176,7 +182,7 @@ WEB_PORT=8080
 WEB_CORS_ALLOW_ORIGINS=http://<ALB-DNS>,http://localhost:3000
 ```
 
-5. アプリケーションのビルド
+#### 5. アプリケーションのビルド
 
 ローカルでクロスコンパイル(推奨)
 
@@ -185,7 +191,7 @@ WEB_CORS_ALLOW_ORIGINS=http://<ALB-DNS>,http://localhost:3000
 make build-linux
 
 # EC2にアップロード
-scp bin_linux ec2-user@<backend-ip>:~/todo-app-next-go/backend
+scp -i <key-file>.pem bin_linux ec2-user@<backend-ip>:~/todo-app-next-go/backend
 ```
 
 EC2 で直接ビルド(時間がかかる)
@@ -197,7 +203,7 @@ go mod download
 go build -o bin_linux ./cmd/server/main.go
 ```
 
-6. 動作確認(テスト起動)
+#### 6. 動作確認(テスト起動)
 
 ```bash
 # テスト起動
@@ -207,7 +213,7 @@ APP_ENV=production ./bin_linux
 curl http://localhost:8080/api
 ```
 
-7. systemd サービスの作成
+#### 7. systemd サービスの作成
 
 ```bash
 sudo vi /etc/systemd/system/todo-backend.service
