@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import PageHeader from '@/app/ui/page-header'
 import InputForm from '@/app/ui/input-form'
+import PasswordInput from '@/app/ui/password-input'
 import Button from '@/app/ui/button'
 import { useAuth } from './hooks/useAuth'
 import AuthTabs from './components/AuthTabs'
@@ -29,79 +30,40 @@ function AuthContent() {
               {tab === 'login' ? 'Login' : 'Sign up'}
             </h2>
 
-            {/* Login Form */}
-            {tab === 'login' && (
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div>
-                  <InputForm
-                    value={email}
-                    onChange={(value: string) =>
-                      setValue('email', value, { shouldValidate: false })
-                    }
-                    placeholder="email"
-                  ></InputForm>
-                  {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-                  )}
-                </div>
-                <div>
-                  <InputForm
-                    value={password}
-                    onChange={(value: string) =>
-                      setValue('password', value, { shouldValidate: false })
-                    }
-                    placeholder="password"
-                  ></InputForm>
-                  {errors.password && (
-                    <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
-                  )}
-                </div>
-                <div className="flex justify-center">
-                  <Button
-                    name="Login"
-                    onClick={handleSubmit(onSubmit)}
-                    loading={isLoading}
-                  ></Button>
-                </div>
-              </form>
-            )}
-
-            {/* Signup Form */}
-            {tab === 'signup' && (
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div>
-                  <InputForm
-                    value={email}
-                    onChange={(value: string) =>
-                      setValue('email', value, { shouldValidate: false })
-                    }
-                    placeholder="email"
-                  ></InputForm>
-                  {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-                  )}
-                </div>
-                <div>
-                  <InputForm
-                    value={password}
-                    onChange={(value: string) =>
-                      setValue('password', value, { shouldValidate: false })
-                    }
-                    placeholder="password"
-                  ></InputForm>
-                  {errors.password && (
-                    <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
-                  )}
-                </div>
-                <div className="flex justify-center">
-                  <Button
-                    name="Sign up"
-                    onClick={handleSubmit(onSubmit)}
-                    loading={isLoading}
-                  ></Button>
-                </div>
-              </form>
-            )}
+            {/* Auth Form */}
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div>
+                <InputForm
+                  value={email}
+                  onChange={(value: string) =>
+                    setValue('email', value, { shouldValidate: false })
+                  }
+                  placeholder="email"
+                ></InputForm>
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                )}
+              </div>
+              <div>
+                <PasswordInput
+                  value={password}
+                  onChange={(value: string) =>
+                    setValue('password', value, { shouldValidate: false })
+                  }
+                  placeholder="password"
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                )}
+              </div>
+              <div className="flex justify-center">
+                <Button
+                  name={tab === 'login' ? 'Login' : 'Sign up'}
+                  onClick={handleSubmit(onSubmit)}
+                  loading={isLoading}
+                ></Button>
+              </div>
+            </form>
 
             {errorMessage && (
               <div className="text-red-700 p-3 rounded mt-4 mb-4">{errorMessage}</div>
