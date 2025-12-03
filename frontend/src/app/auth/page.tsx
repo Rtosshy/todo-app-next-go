@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import PageHeader from '@/app/ui/page-header'
 import InputForm from '@/app/ui/input-form'
@@ -7,7 +8,7 @@ import Button from '@/app/ui/button'
 import { useAuth } from './hooks/useAuth'
 import AuthTabs from './components/AuthTabs'
 
-export default function Auth() {
+function AuthContent() {
   const searchParams = useSearchParams()
   const tab = (searchParams.get('tab') || 'login') as 'login' | 'signup'
 
@@ -34,15 +35,21 @@ export default function Auth() {
                 <div>
                   <InputForm
                     value={email}
-                    onChange={(value: string) => setValue('email', value, { shouldValidate: false })}
+                    onChange={(value: string) =>
+                      setValue('email', value, { shouldValidate: false })
+                    }
                     placeholder="email"
                   ></InputForm>
-                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                  )}
                 </div>
                 <div>
                   <InputForm
                     value={password}
-                    onChange={(value: string) => setValue('password', value, { shouldValidate: false })}
+                    onChange={(value: string) =>
+                      setValue('password', value, { shouldValidate: false })
+                    }
                     placeholder="password"
                   ></InputForm>
                   {errors.password && (
@@ -50,7 +57,11 @@ export default function Auth() {
                   )}
                 </div>
                 <div className="flex justify-center">
-                  <Button name="Login" onClick={handleSubmit(onSubmit)} loading={isLoading}></Button>
+                  <Button
+                    name="Login"
+                    onClick={handleSubmit(onSubmit)}
+                    loading={isLoading}
+                  ></Button>
                 </div>
               </form>
             )}
@@ -61,15 +72,21 @@ export default function Auth() {
                 <div>
                   <InputForm
                     value={email}
-                    onChange={(value: string) => setValue('email', value, { shouldValidate: false })}
+                    onChange={(value: string) =>
+                      setValue('email', value, { shouldValidate: false })
+                    }
                     placeholder="email"
                   ></InputForm>
-                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                  )}
                 </div>
                 <div>
                   <InputForm
                     value={password}
-                    onChange={(value: string) => setValue('password', value, { shouldValidate: false })}
+                    onChange={(value: string) =>
+                      setValue('password', value, { shouldValidate: false })
+                    }
                     placeholder="password"
                   ></InputForm>
                   {errors.password && (
@@ -77,15 +94,31 @@ export default function Auth() {
                   )}
                 </div>
                 <div className="flex justify-center">
-                  <Button name="Sign up" onClick={handleSubmit(onSubmit)} loading={isLoading}></Button>
+                  <Button
+                    name="Sign up"
+                    onClick={handleSubmit(onSubmit)}
+                    loading={isLoading}
+                  ></Button>
                 </div>
               </form>
             )}
 
-            {errorMessage && <div className="text-red-700 p-3 rounded mt-4 mb-4">{errorMessage}</div>}
+            {errorMessage && (
+              <div className="text-red-700 p-3 rounded mt-4 mb-4">{errorMessage}</div>
+            )}
           </div>
         </div>
       </div>
     </div>
+  )
+}
+
+export default function Auth() {
+  return (
+    <Suspense
+      fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}
+    >
+      <AuthContent />
+    </Suspense>
   )
 }
