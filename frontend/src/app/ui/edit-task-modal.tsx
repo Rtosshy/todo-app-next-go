@@ -82,7 +82,7 @@ export default function EditTaskModal({ task, onSave, onCancel, isLoading }: Edi
               control={control}
               render={({ field }) => (
                 <SelectForm
-                  value={field.value}
+                  value={field.value ?? ''}
                   onChange={(value: string) => field.onChange(value)}
                   options={statusOptions}
                 />
