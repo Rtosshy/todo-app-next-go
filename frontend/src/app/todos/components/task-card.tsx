@@ -12,6 +12,7 @@ export default function TaskCard({ task, onDelete, onEdit }: TaskCardProps) {
     <div className="border p-4 rounded mb-2">
       <h3 className="text-lg font-bold">{task.name}</h3>
       <p className="text-sm text-gray-100">Status: {task.status.name}</p>
+      {task.deadline && <p className="text-sm text-gray-100">Deadline: {task.deadline}</p>}
       <div className="flex gap-2 mt-2">
         <Button name="Edit" onClick={() => onEdit(task)} loading={false} />
         <Button name="Delete" onClick={() => onDelete(task.id)} loading={false} />

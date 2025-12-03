@@ -9,6 +9,8 @@ export type ApiVersion = string
 
 export type CsrfToken = string
 
+export type Deadline = string
+
 export type StatusName = (typeof StatusName)[keyof typeof StatusName]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -38,6 +40,7 @@ export interface Task {
   id: number
   name: string
   status: Status
+  deadline?: Deadline
 }
 
 export interface SignUpRequestBody {
@@ -54,12 +57,14 @@ export interface CreateTaskRequestBody {
   kind?: string
   name: string
   status: Status
+  deadline?: Deadline
 }
 
 export interface UpdateTaskRequestBody {
   kind?: string
   name: string
   status: Status
+  deadline?: Deadline
 }
 
 export interface Error {

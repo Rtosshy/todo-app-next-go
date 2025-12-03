@@ -1,5 +1,5 @@
 import { Task } from '@/gen/api-client'
-import TaskCard from '@/app/ui/task-card'
+import TaskCard from './task-card'
 
 interface TasksViewProps {
   tasks: Task[]

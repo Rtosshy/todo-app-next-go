@@ -62,6 +62,7 @@ export const createTaskBody = zod.object({
     id: zod.number().optional(),
     name: zod.enum(['todo', 'inProgress', 'done', 'archive', 'pending']),
   }),
+  deadline: zod.iso.date().optional(),
 })
 
 /**
@@ -81,6 +82,7 @@ export const getAllTasksResponse = zod.object({
         id: zod.number().optional(),
         name: zod.enum(['todo', 'inProgress', 'done', 'archive', 'pending']),
       }),
+      deadline: zod.iso.date().optional(),
     }),
   ),
 })
@@ -105,6 +107,7 @@ export const getTaskByIdResponse = zod.object({
       id: zod.number().optional(),
       name: zod.enum(['todo', 'inProgress', 'done', 'archive', 'pending']),
     }),
+    deadline: zod.iso.date().optional(),
   }),
 })
 
@@ -124,6 +127,7 @@ export const updateTaskByIdBody = zod.object({
     id: zod.number().optional(),
     name: zod.enum(['todo', 'inProgress', 'done', 'archive', 'pending']),
   }),
+  deadline: zod.iso.date().optional(),
 })
 
 export const updateTaskByIdResponseApiVersionDefault = 'v1'
@@ -139,6 +143,7 @@ export const updateTaskByIdResponse = zod.object({
       id: zod.number().optional(),
       name: zod.enum(['todo', 'inProgress', 'done', 'archive', 'pending']),
     }),
+    deadline: zod.iso.date().optional(),
   }),
 })
 

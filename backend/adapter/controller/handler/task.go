@@ -8,6 +8,7 @@ import (
 	"backend/usecase"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,33 +29,46 @@ func NewTaskHandler(tu usecase.ITaskUsecase) ITaskHandler {
 	return &taskHandler{tu: tu}
 }
 
+func timeToDeadline(t *time.Time) *presenter.Deadline {
+	if t == nil {
+		return nil
+	}
+	deadline := presenter.Deadline{Time: *t}
+	return &deadline
+}
+
+func deadlineToTime(d *presenter.Deadline) *time.Time {
+	if d == nil {
+		return nil
+	}
+	time := d.Time
+	return &time
+}
+
+func taskToData(task *entity.Task) presenter.Task {
+	return presenter.Task{
+		Kind: "task",
+		Id:   int(task.ID),
+		Name: task.Name,
+		Status: presenter.Status{
+			Id:   (*int)(&task.Status.ID),
+			Name: presenter.StatusName(task.Status.Name),
+		},
+		Deadline: timeToDeadline(task.Deadline),
+	}
+}
+
 func taskToResponse(task *entity.Task) presenter.TaskResponse {
 	return presenter.TaskResponse{
 		ApiVersion: api.Version,
-		Data: presenter.Task{
-			Kind: "task",
-			Id:   int(task.ID),
-			Name: task.Name,
-			Status: presenter.Status{
-				Id:   (*int)(&task.Status.ID),
-				Name: presenter.StatusName(task.Status.Name),
-			},
-		},
+		Data:       taskToData(task),
 	}
 }
 
 func tasksToResponse(tasks *[]entity.Task) presenter.TasksResponse {
 	data := make([]presenter.Task, len(*tasks))
 	for i, task := range *tasks {
-		data[i] = presenter.Task{
-			Kind: "task",
-			Id:   int(task.ID),
-			Name: task.Name,
-			Status: presenter.Status{
-				Id:   (*int)(&task.Status.ID),
-				Name: presenter.StatusName(task.Status.Name),
-			},
-		}
+		data[i] = taskToData(&task)
 	}
 	return presenter.TasksResponse{
 		ApiVersion: api.Version,
@@ -101,9 +115,10 @@ func (th *taskHandler) CreateTask(c *gin.Context) {
 	}
 
 	task := &entity.Task{
-		Name:   requestBody.Name,
-		Status: *status,
-		UserID: userID,
+		Name:     requestBody.Name,
+		Status:   *status,
+		UserID:   userID,
+		Deadline: deadlineToTime(requestBody.Deadline),
 	}
 
 	createdTask, err := th.tu.Create(task)
@@ -176,10 +191,11 @@ func (th *taskHandler) UpdateTaskById(c *gin.Context, id int) {
 	taskID := entity.TaskID(id)
 
 	task := &entity.Task{
-		ID:     taskID,
-		Name:   requestBody.Name,
-		Status: *status,
-		UserID: userID,
+		ID:       taskID,
+		Name:     requestBody.Name,
+		Status:   *status,
+		UserID:   userID,
+		Deadline: deadlineToTime(requestBody.Deadline),
 	}
 
 	updatedTask, err := th.tu.Save(task)
