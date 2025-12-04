@@ -91,6 +91,31 @@ export function useTodos() {
     }
   }
 
+  const onUpdateTaskStatus = async (taskId: number, newStatus: StatusName) => {
+    try {
+      const task = tasks.find((t) => t.id === taskId)
+      if (!task) return
+
+      // Optimistic update - update UI immediately
+      setTasks((prevTasks) =>
+        prevTasks.map((t) => (t.id === taskId ? { ...t, status: { name: newStatus } } : t)),
+      )
+
+      // Then update on the server
+      await api.updateTaskById(taskId, {
+        kind: 'task',
+        name: task.name,
+        status: { name: newStatus },
+        deadline: task.deadline,
+      })
+      console.log('Update task status successful!')
+    } catch (error) {
+      console.error('Update task status error:', error)
+      // Revert on error
+      fetchTasks()
+    }
+  }
+
   const groupedTasks = useMemo(() => {
     return {
       todo: tasks.filter((task) => task.status.name === StatusName.todo),
@@ -121,5 +146,6 @@ export function useTodos() {
     onUpdateTask,
     onCancelModal,
     onDeleteTask,
+    onUpdateTaskStatus,
   }
 }
