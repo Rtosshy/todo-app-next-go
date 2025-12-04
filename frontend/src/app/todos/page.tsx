@@ -15,7 +15,7 @@ export default function Todos() {
   const [isLoading, setIsLoading] = useState(false)
 
   const {
-    tasks,
+    groupedTasks,
     modalState,
     isLoading: isTaskLoading,
     errorMessage,
@@ -48,7 +48,7 @@ export default function Todos() {
         <Button name="Logout" onClick={onLogout} loading={isLoading}></Button>
       </div>
       {errorMessage && <div className="text-red-700 p-3 rounded mt-4 mb-4">{errorMessage}</div>}
-      <TasksView tasks={tasks} onDelete={onDeleteTask} onEdit={onEditClick} />
+      <TasksView groupedTasks={groupedTasks} onDelete={onDeleteTask} onEdit={onEditClick} />
       {modalState.mode === 'edit' && (
         <TaskModal
           mode="edit"
