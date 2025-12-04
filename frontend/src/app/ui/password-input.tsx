@@ -13,7 +13,7 @@ export default function PasswordInput({ value, onChange, placeholder }: Password
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <div className="relative w-85">
+    <div className="relative w-full">
       <input
         type={showPassword ? "text" : "password"}
         placeholder={placeholder}
