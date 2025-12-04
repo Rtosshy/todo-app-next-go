@@ -24,7 +24,7 @@ function AuthContent() {
       {/* Form Container - Vertically and Horizontally Centered */}
       <div className="flex-1 flex items-center justify-center">
         <div className="w-full max-w-md px-4">
-          <div className="bg-gray-900 p-8 rounded-lg">
+          <div className="bg-gray-900 p-4 sm:p-8 rounded-lg">
             {/* Form Title */}
             <h2 className="text-3xl font-bold mb-6 text-white text-center">
               {tab === 'login' ? 'Login' : 'Sign up'}
