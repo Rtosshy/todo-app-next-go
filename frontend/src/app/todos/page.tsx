@@ -25,6 +25,7 @@ export default function Todos() {
     onUpdateTask,
     onCancelModal,
     onDeleteTask,
+    onUpdateTaskStatus,
   } = useTodos()
 
   const onLogout = async () => {
@@ -48,7 +49,7 @@ export default function Todos() {
         <Button name="Logout" onClick={onLogout} loading={isLoading}></Button>
       </div>
       {errorMessage && <div className="text-red-700 p-3 rounded mt-4 mb-4">{errorMessage}</div>}
-      <TasksView groupedTasks={groupedTasks} onDelete={onDeleteTask} onEdit={onEditClick} />
+      <TasksView groupedTasks={groupedTasks} onDelete={onDeleteTask} onEdit={onEditClick} onUpdateStatus={onUpdateTaskStatus} />
       {modalState.mode === 'edit' && (
         <TaskModal
           mode="edit"

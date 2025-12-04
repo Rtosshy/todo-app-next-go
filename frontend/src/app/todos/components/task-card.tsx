@@ -1,3 +1,4 @@
+import { useDraggable } from '@dnd-kit/core'
 import { Task, StatusName } from '@/gen/api-client'
 import Button from '@/app/ui/button'
 
@@ -17,10 +18,21 @@ const buttonColors: Record<StatusName, { bg: string; hover: string }> = {
 }
 
 export default function TaskCard({ task, onDelete, onEdit, cardColor }: TaskCardProps) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: task.id,
+  })
+
   const colors = buttonColors[task.status.name] || { bg: 'bg-gray-700', hover: 'hover:bg-gray-600' }
 
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        opacity: isDragging ? 0 : 1,
+      }
+    : undefined
+
   return (
-    <div className={`p-4 rounded mb-2 ${cardColor}`}>
+    <div ref={setNodeRef} style={style} {...listeners} {...attributes} className={`p-4 rounded mb-2 ${cardColor} cursor-grab active:cursor-grabbing`}>
       <h3 className="text-xl font-bold break-words">{task.name}</h3>
       {task.deadline && <p className="text-base font-bold text-gray-300 mt-2">Deadline: {task.deadline}</p>}
       <div className="flex gap-2 mt-3">
