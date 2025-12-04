@@ -91,6 +91,16 @@ export function useTodos() {
     }
   }
 
+  const groupedTasks = useMemo(() => {
+    return {
+      todo: tasks.filter((task) => task.status.name === StatusName.todo),
+      inProgress: tasks.filter((task) => task.status.name === StatusName.inProgress),
+      done: tasks.filter((task) => task.status.name === StatusName.done),
+      archive: tasks.filter((task) => task.status.name === StatusName.archive),
+      pending: tasks.filter((task) => task.status.name === StatusName.pending),
+    }
+  }, [tasks])
+
   useEffect(() => {
     const loadTasks = async () => {
       await ensureCsrfToken()
@@ -101,6 +111,7 @@ export function useTodos() {
 
   return {
     tasks,
+    groupedTasks,
     modalState,
     isLoading,
     errorMessage,
