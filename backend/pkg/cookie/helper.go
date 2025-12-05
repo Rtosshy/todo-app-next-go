@@ -11,8 +11,8 @@ func GetCookieConfig() (sameSite http.SameSite, secure bool, domain string) {
 
 	if isProduction {
 		sameSite = http.SameSiteNoneMode // AWSのHTTPの時だけLaxMode
-		secure = true // AWSのHTTPの時だけfalse
-		domain = os.Getenv("API_DOMAIN")
+		secure = true                    // AWSのHTTPの時だけfalse
+		domain = ""                      // 将来的に同一ドメインに移行するなら設定が必要
 	} else {
 		sameSite = http.SameSiteLaxMode
 		secure = false
