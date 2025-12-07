@@ -15,15 +15,17 @@ Next.js 16 (App Router) + React 19 による Todo アプリケーション
 ```bash
 frontend/
   └── src/
-      ├── app/              # Next.js App Router
-      │   ├── login/        # ログインページ
-      │   ├── signup/       # サインアップページ
-      │   ├── todos/        # Todo管理ページ
-      │   └── ui/           # 共通UIコンポーネント
-      ├── gen/              # OpenAPIから生成（編集禁止）
-      │   ├── api-client.ts # 型付きAPIクライアント
-      │   └── schemas/      # Zodバリデーションスキーマ
-      └── lib/              # ユーティリティ関数
+      ├── app/                # Next.js App Router
+      │   ├── auth/           # 認証ページ（ログイン/サインアップ）
+      │   │   ├── components/ # 認証用コンポーネント
+      │   │   └── hooks/      # 認証用フック
+      │   ├── todos/          # Todo管理ページ
+      │   │   ├── components/ # Todo用コンポーネント
+      │   │   ├── hooks/      # Todo用フック
+      │   │   └── types/      # 型定義
+      │   └── ui/             # 共通UIコンポーネント
+      ├── gen/                # OpenAPIから生成（編集禁止）
+      └── lib/                # ユーティリティ関数
 ```
 
 ## ローカル PC でのセットアップ
