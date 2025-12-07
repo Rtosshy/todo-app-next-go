@@ -116,7 +116,7 @@ node -v
 # 出力： v23.x.x
 
 npm -v
-# 出力： vx.x.x
+# 出力： v10.x.x
 ```
 
 #### 2. Git のインストール
@@ -155,7 +155,7 @@ vi .env
 以下の内容を入力
 
 ```env
-NEXT_PUBLIC_API_URL=http://<ALB-DNS>/api/v1
+NEXT_PUBLIC_API_URL=http://<backend-server-dns>/api/v1
 ```
 
 #### 6. 依存関係のインストールとビルド

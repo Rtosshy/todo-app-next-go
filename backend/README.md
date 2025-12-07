@@ -131,10 +131,10 @@ sudo yum update -y
 
 # Goのダウンロード
 cd /tmp
-wget https://go.dev/dl/go.1.25.4.linux-amd64.tar.gz
+wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz
 
 # Goの展開
-sudo tar -C /usr/local -xzf go1.25.4.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.25.5.linux-amd64.tar.gz
 
 # パスの設定
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
@@ -143,7 +143,7 @@ source ~/.bashrc
 
 # インストール確認
 go version
-# 出力: go version go1.25.4 linux/amd64
+# 出力: go version go1.25.5 linux/amd64
 ```
 
 #### 2. Git のインストール
@@ -176,11 +176,12 @@ DB_NAME=todo_db
 DB_HOST=<RDS-endpoint>
 DB_PORT=5432
 DB_DRIVER=postgres
+DB_SSL_MODE=required
 SECRET=<random-secret-key>
 API_DOMAIN=
 WEB_HOST=0.0.0.0
 WEB_PORT=8080
-WEB_CORS_ALLOW_ORIGINS=http://<ALB-DNS>,http://localhost:3000
+WEB_CORS_ALLOW_ORIGINS=http://<frontend-server-dns>
 ```
 
 #### 5. アプリケーションのビルド
