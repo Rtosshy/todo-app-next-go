@@ -15,15 +15,17 @@ Next.js 16 (App Router) + React 19 による Todo アプリケーション
 ```bash
 frontend/
   └── src/
-      ├── app/              # Next.js App Router
-      │   ├── login/        # ログインページ
-      │   ├── signup/       # サインアップページ
-      │   ├── todos/        # Todo管理ページ
-      │   └── ui/           # 共通UIコンポーネント
-      ├── gen/              # OpenAPIから生成（編集禁止）
-      │   ├── api-client.ts # 型付きAPIクライアント
-      │   └── schemas/      # Zodバリデーションスキーマ
-      └── lib/              # ユーティリティ関数
+      ├── app/                # Next.js App Router
+      │   ├── auth/           # 認証ページ（ログイン/サインアップ）
+      │   │   ├── components/ # 認証用コンポーネント
+      │   │   └── hooks/      # 認証用フック
+      │   ├── todos/          # Todo管理ページ
+      │   │   ├── components/ # Todo用コンポーネント
+      │   │   ├── hooks/      # Todo用フック
+      │   │   └── types/      # 型定義
+      │   └── ui/             # 共通UIコンポーネント
+      ├── gen/                # OpenAPIから生成（編集禁止）
+      └── lib/                # ユーティリティ関数
 ```
 
 ## ローカル PC でのセットアップ
@@ -116,7 +118,7 @@ node -v
 # 出力： v23.x.x
 
 npm -v
-# 出力： vx.x.x
+# 出力： v10.x.x
 ```
 
 #### 2. Git のインストール
@@ -155,7 +157,7 @@ vi .env
 以下の内容を入力
 
 ```env
-NEXT_PUBLIC_API_URL=http://<ALB-DNS>/api/v1
+NEXT_PUBLIC_API_URL=http://<backend-server-dns>/api/v1
 ```
 
 #### 6. 依存関係のインストールとビルド
