@@ -97,7 +97,7 @@ Go + Clean Architecture による Todo API サーバー
 
 ## インフラ構成図
 
-![infra](./docs/infra.png)
+![infra](./docs/configuration.png)
 
 ## トラブルシューティング
 
